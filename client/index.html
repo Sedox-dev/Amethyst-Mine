@@ -1,0 +1,117 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <title>Game</title>
+    <style>
+      * {
+        font-size: 16px;
+        font-family: monospace;
+        color: White;
+      }
+
+      body {
+        margin: 0;
+        height: 100svh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background-color: #0a0a0f;
+      }
+
+      h1 {
+        font-weight: 600;
+        font-size: 200px;
+        margin: 0;
+        margin-bottom: -36px;
+        word-spacing: -48px;
+      }
+
+      p {
+        line-height: 1.6;
+        color: #a2a7b0;
+      }
+
+      span {
+        color: #d99eff;
+      }
+
+      canvas {
+        image-rendering: -moz-crisp-edges;
+        image-rendering: -webkit-crisp-edges;
+        image-rendering: pixelated;
+        image-rendering: crisp-edges;
+
+        border-radius: 2px;
+        background-color: #f2d6ff;
+        display: none;
+      }
+
+      .container {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        text-align: center;
+        gap: 24px;
+      }
+
+      .btns {
+        display: flex;
+        gap: 12px;
+      }
+
+      #connect-wallet {
+        cursor: pointer;
+        border: 1px solid white;
+        color: black;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: 0.2s;
+        box-shadow:
+          -6px -6px 20px rgba(168, 85, 247, 0.6),
+          0px 0px 15px rgba(59, 130, 246, 0.6),
+          6px 6px 20px rgba(236, 72, 153, 0.6);
+      }
+
+      #as-guest {
+        cursor: pointer;
+        background: none;
+        border: 1px solid white;
+        padding: 12px 24px;
+        border-radius: 8px;
+        transition: 0.2s;
+      }
+
+      #as-guest:hover {
+        scale: 0.96;
+      }
+
+      #connect-wallet:hover {
+        background-color: #c2c8d2;
+      }
+
+      #connect-wallet:active,
+      #as-guest:active {
+        scale: 1.06;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="ui" class="container">
+      <h1>AME Mine</h1>
+
+      <p>
+        Build your fortune: <span>mine</span> resources, <span>upgrade</span> your assets, <br />and
+        <span>trade</span> with players in a thriving economy.<br />Every smart decision you make
+        brings you closer to <span>real financial rewards</span>
+      </p>
+
+      <div class="btns">
+        <button id="connect-wallet">Connect Wallet</button>
+        <button id="as-guest">Guest</button>
+      </div>
+    </div>
+    <canvas id="canvas"></canvas>
+    <script type="module" src="./dist/app/main.js"></script>
+  </body>
+</html>

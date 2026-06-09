@@ -1,0 +1,17 @@
+[package]
+name = "Mine"
+version = "1.0.0"
+authors = []
+
+[addresses]
+game_addr="0x8def2b80047ca891956df00075de15fa732b3030273ea1165ab4921169b36400"
+cedra_framework = "0x1"
+
+[dev-addresses]
+
+[dependencies.CedraFramework]
+git = "https://github.com/cedra-labs/cedra-framework.git"
+rev = "mainnet"
+subdir = "cedra-framework"
+
+[dev-dependencies]
