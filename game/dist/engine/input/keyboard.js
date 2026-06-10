@@ -16,5 +16,6 @@ export class Keyboard {
         window.addEventListener('mouseup', (e) => {
             this.keys[e.button] = false;
         });
+        window.addEventListener('blur', () => (this.keys = {}));
     }
 }

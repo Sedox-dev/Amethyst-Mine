@@ -21,6 +21,8 @@ export class Keyboard implements IKeyboard {
     window.addEventListener('mouseup', (e) => {
       this.keys[e.button] = false
     })
+
+    window.addEventListener('blur', () => (this.keys = {}))
   }
 
   isDown = (key: string): boolean => {
