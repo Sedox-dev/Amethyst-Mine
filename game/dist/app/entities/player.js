@@ -17,6 +17,7 @@ export class Player extends Entity {
         this.clip = 'Idle';
         this.lastMoveTime = performance.now();
         this.uiBackground = uiBackground;
+        this.animator.init();
     }
     initialize() {
         this.move();

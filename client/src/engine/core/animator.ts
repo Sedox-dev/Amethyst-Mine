@@ -4,6 +4,7 @@ interface IAnimator {
   unstoppable: boolean
   lastDir: string | null
 
+  init(): Promise<void>
   play(clip: string, scale: number, position: Vector2, event?: Event, frameSize?: number): void
 }
 
@@ -41,6 +42,33 @@ export class Animator implements IAnimator {
     this.lastDir = null
     this.currentClip = null
     this.currentEvent = null
+  }
+
+  async init(): Promise<void> {
+    const promises: Promise<void>[] = []
+
+    for (const dir in this.sprites) {
+      for (const clip in this.sprites[dir]) {
+        const path = this.sprites[dir][clip]
+
+        if (!this.cache[path]) {
+          const promise = new Promise<void>((resolve, reject) => {
+            const img = new Image()
+            img.src = path
+
+            img.onload = () => {
+              this.cache[path] = img
+              resolve()
+            }
+            img.onerror = () => reject()
+          })
+
+          promises.push(promise)
+        }
+      }
+    }
+
+    await Promise.all(promises)
   }
 
   play(clip: string, scale: number, position: Vector2, event?: Event, frameSize: number = 48) {

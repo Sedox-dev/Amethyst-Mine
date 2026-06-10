@@ -12,6 +12,27 @@ export class Animator {
         this.currentClip = null;
         this.currentEvent = null;
     }
+    async init() {
+        const promises = [];
+        for (const dir in this.sprites) {
+            for (const clip in this.sprites[dir]) {
+                const path = this.sprites[dir][clip];
+                if (!this.cache[path]) {
+                    const promise = new Promise((resolve, reject) => {
+                        const img = new Image();
+                        img.src = path;
+                        img.onload = () => {
+                            this.cache[path] = img;
+                            resolve();
+                        };
+                        img.onerror = () => reject();
+                    });
+                    promises.push(promise);
+                }
+            }
+        }
+        await Promise.all(promises);
+    }
     play(clip, scale, position, event, frameSize = 48) {
         let dir = this.direction.toDir();
         if (!dir) {
