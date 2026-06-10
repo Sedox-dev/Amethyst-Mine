@@ -4,7 +4,7 @@ export class Network {
         this.players = {};
         this.store = {};
         this.mined = new Set();
-        this.ws = new WebSocket('http://localhost:8080');
+        this.ws = new WebSocket('https://amethyst-mine.onrender.com');
         this.status = null;
         this.ws.addEventListener('open', () => {
             this.status = true;
