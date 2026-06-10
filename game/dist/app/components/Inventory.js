@@ -26,7 +26,6 @@ const Inventory = () => {
         contract.get('get_player_tools', [address]).then((res) => {
             inventory['pickaxe'].level = res[0];
             inventory['sword'].level = res[1];
-            console.log(res);
         });
     };
     return { get, add, decrement, check };
