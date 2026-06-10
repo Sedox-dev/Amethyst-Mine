@@ -34,6 +34,7 @@ export class Player extends Entity implements IPlayer {
   private cave: Cave
   private speed: number
   private clip: string
+  private lastMoveTime: number
 
   private uiBackground: (color: string) => void
 
@@ -51,8 +52,9 @@ export class Player extends Entity implements IPlayer {
     this.animator = new Animator(ctx, this.direction, sprites)
     this.collider = collider
     this.cave = cave
-    this.speed = 3
+    this.speed = 6
     this.clip = 'Idle'
+    this.lastMoveTime = performance.now()
     this.uiBackground = uiBackground
   }
 
@@ -78,6 +80,12 @@ export class Player extends Entity implements IPlayer {
   }
 
   private move() {
+    const currentTime = performance.now()
+    const dt = (currentTime - this.lastMoveTime) / 1000
+
+    this.lastMoveTime = currentTime
+    const cappedDt = Math.min(dt, 0.1) * 60
+
     this.direction.x = 0
     this.direction.y = 0
 
@@ -99,11 +107,11 @@ export class Player extends Entity implements IPlayer {
     if (cell.isCollider || this.animator.unstoppable) return
 
     if (Math.hypot(this.direction.x, this.direction.y) > 1) {
-      this.position.local.x += (this.direction.x * this.speed) / Math.sqrt(2)
-      this.position.local.y += (this.direction.y * this.speed) / Math.sqrt(2)
+      this.position.local.x += ((this.direction.x * this.speed) / Math.sqrt(2)) * cappedDt
+      this.position.local.y += ((this.direction.y * this.speed) / Math.sqrt(2)) * cappedDt
     } else {
-      this.position.local.x += this.direction.x * this.speed
-      this.position.local.y += this.direction.y * this.speed
+      this.position.local.x += this.direction.x * this.speed * cappedDt
+      this.position.local.y += this.direction.y * this.speed * cappedDt
     }
   }
 
