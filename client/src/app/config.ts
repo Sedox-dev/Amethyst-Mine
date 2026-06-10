@@ -1,16 +1,14 @@
 import { Vector2 } from '../engine/math/vector2.js'
 
-type Texture = {
-  path: string
-}
-
-type Textures = {
-  tilemap: Record<string, Texture>
-  ui: string
-}
-
 const scale: number = 3
 const tileSize: number = 16 * scale
+
+const point: Vector2 = new Vector2()
+const scope: Vector2 = new Vector2(
+  Math.round(window.innerWidth / tileSize / 2 + 3),
+  Math.round(window.innerHeight / tileSize / 2 + 3),
+)
+
 const env = {
   cave: {
     position: new Vector2(-100 * tileSize, 0 * tileSize),
@@ -90,4 +88,4 @@ const grid = {
   },
 }
 
-export { tileSize, env, grid, scale, textures, items, sprites }
+export { tileSize, scope, point, scale, env, items, textures, sprites, grid }

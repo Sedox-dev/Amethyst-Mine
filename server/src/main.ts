@@ -65,7 +65,7 @@ setInterval(() => {
       client.send(JSON.stringify({ mined: mined }))
     }
   })
-}, 1000 / 120)
+}, 1000 / 60)
 
 setInterval(() => {
   const list = mined.splice(0, 3)

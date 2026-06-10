@@ -2,7 +2,7 @@ import { Animator } from '../../engine/core/animator.js';
 import { Keyboard } from '../../engine/input/keyboard.js';
 import { Vector2 } from '../../engine/math/vector2.js';
 import { Entity } from './entity.js';
-import { env, scale, tileSize } from '../config.js';
+import { env, point, scale, tileSize } from '../config.js';
 import Inventory from '../components/Inventory.js';
 export class Player extends Entity {
     constructor(ctx, sprites, collider, cave, uiBackground) {
@@ -23,6 +23,8 @@ export class Player extends Entity {
         this.move();
         this.attack();
         this.toCave();
+        point.x = this.position.global.x;
+        point.y = this.position.global.y;
     }
     getData() {
         return {

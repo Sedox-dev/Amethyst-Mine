@@ -1,4 +1,5 @@
 import { Vector2 } from '../../engine/math/vector2.js';
+import { Draw } from './Draw.js';
 import { textures, tileSize, env } from '../config.js';
 var CellType;
 (function (CellType) {
@@ -10,12 +11,12 @@ var CellType;
 export class Cave {
     constructor(ctx, grid, position, colliders, ws) {
         this.path = textures.tilemap.cave.path;
-        this.cache = {};
         this.grid = [];
         this.ctx = ctx;
         this.position = position;
         this.colliders = colliders;
         this.ws = ws;
+        this.draw = new Draw(ctx);
         this.groundTileIndex = new Set([1, 2, 3, 4]);
         this.spawnArea = new Set(['-81,28', '-80,28', '-79,28', '-78,28']);
         this.spawn(new Vector2(-85, -74), new Vector2(22, 27));
@@ -59,11 +60,13 @@ export class Cave {
                     }
                     continue;
                 }
-                this.drawTile(this.path, new Vector2(Math.round(y * tileSize + this.position.x - offset.x), Math.round(x * tileSize + this.position.y - offset.y)), new Vector2(16, 16));
+                const posX = Math.round(y * tileSize + this.position.x - offset.x);
+                const posY = Math.round(x * tileSize + this.position.y - offset.y);
+                this.draw.tile(this.path, posX, posY, 16, 16);
                 const cellBelow = this.grid[x + 1][y];
                 if (cellBelow.type === CellType.CRISTAL || cellBelow.type === CellType.CLIFF)
                     continue;
-                this.drawTile(this.path, new Vector2(Math.round(y * tileSize + this.position.x - offset.x), Math.round(x * tileSize + this.position.y + tileSize - offset.y)), new Vector2(16, 32));
+                this.draw.tile(this.path, posX, posY + tileSize, 16, 32);
             }
         }
         this.colliders.setByString(this.ws.mined);
@@ -100,14 +103,6 @@ export class Cave {
                 this.spawnArea.add(`${x},${y}`);
             }
         }
-    }
-    drawTile(path, position, offset) {
-        const image = this.cache[path] || new Image();
-        if (!image.src) {
-            image.src = path;
-            this.cache[path] = image;
-        }
-        this.ctx.drawImage(image, offset.x, offset.y, 16, 16, position.x, position.y, tileSize, tileSize);
     }
 }
 class Cell {

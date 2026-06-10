@@ -1,6 +1,7 @@
 import { Vector2 } from '../../engine/math/vector2.js'
 import { Network } from '../managers/network.js'
 import { Colliders } from '../../engine/core/colliders.js'
+import { Draw } from './Draw.js'
 
 import { textures, tileSize, env } from '../config.js'
 
@@ -30,7 +31,7 @@ export class Cave implements ICave {
   private ws: Network
 
   private path: string = textures.tilemap.cave.path
-  private cache: Record<string, HTMLImageElement> = {}
+  private draw: Draw
 
   private groundTileIndex: Set<number>
   private spawnArea: Set<string>
@@ -47,6 +48,8 @@ export class Cave implements ICave {
     this.position = position
     this.colliders = colliders
     this.ws = ws
+
+    this.draw = new Draw(ctx)
 
     this.groundTileIndex = new Set([1, 2, 3, 4])
     this.spawnArea = new Set(['-81,28', '-80,28', '-79,28', '-78,28'])
@@ -115,27 +118,16 @@ export class Cave implements ICave {
           continue
         }
 
-        this.drawTile(
-          this.path,
-          new Vector2(
-            Math.round(y * tileSize + this.position.x - offset.x),
-            Math.round(x * tileSize + this.position.y - offset.y),
-          ),
-          new Vector2(16, 16),
-        )
+        const posX = Math.round(y * tileSize + this.position.x - offset.x)
+        const posY = Math.round(x * tileSize + this.position.y - offset.y)
+
+        this.draw.tile(this.path, posX, posY, 16, 16)
 
         const cellBelow = this.grid[x + 1][y]
 
         if (cellBelow.type === CellType.CRISTAL || cellBelow.type === CellType.CLIFF) continue
 
-        this.drawTile(
-          this.path,
-          new Vector2(
-            Math.round(y * tileSize + this.position.x - offset.x),
-            Math.round(x * tileSize + this.position.y + tileSize - offset.y),
-          ),
-          new Vector2(16, 32),
-        )
+        this.draw.tile(this.path, posX, posY + tileSize, 16, 32)
       }
     }
 
@@ -181,28 +173,6 @@ export class Cave implements ICave {
         this.spawnArea.add(`${x},${y}`)
       }
     }
-  }
-
-  private drawTile(path: string, position: Vector2, offset: Vector2) {
-    const image = this.cache[path] || new Image()
-
-    if (!image.src) {
-      image.src = path
-
-      this.cache[path] = image
-    }
-
-    this.ctx.drawImage(
-      image,
-      offset.x,
-      offset.y,
-      16,
-      16,
-      position.x,
-      position.y,
-      tileSize,
-      tileSize,
-    )
   }
 }
 
